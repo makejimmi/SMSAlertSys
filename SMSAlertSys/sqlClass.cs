@@ -15,12 +15,7 @@ namespace SMSAlertSys
 {
     class sqlClass
     {
-        private string connectionString = "";
-
-        MySqlConnection databaseConnection = null;
-
-        MySqlCommand commandDatabase = null;
-
+        DataTable dataTable = null;
         // Change username, password and database according to one's needs
         // the database options can be ignored if you want to access all of them
         private string datasource = "localhost";
@@ -38,20 +33,12 @@ namespace SMSAlertSys
         private string notes = "";
         private string email = "";
         private string phonenr = "";
-        string queryReady = "";
-
-        public string getDatasource() { return datasource; }
-        public string getPort() { return port; }
-        public string getUsername() { return username; }
-        public string getPassword() { return password; }
-        public string getDatabase() { return database; }
-        public MySqlConnection getConnection() { return databaseConnection; }
 
         public sqlClass(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
         {
             try
             {
-                this.databaseConnection = new MySqlConnection(SqlSetting());
+                GlobalVars.connection = new MySqlConnection(SqlSetting());
 
                 this.title = title;
                 this.passed = passed;
@@ -72,11 +59,43 @@ namespace SMSAlertSys
         {
             try
             {
-                this.databaseConnection = new MySqlConnection(SqlSetting());
+                GlobalVars.connection = new MySqlConnection(SqlSetting());
             }
-            catch (Exception e) 
+            catch (Exception ex) 
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void reconnect() 
+        {
+            try
+            {
+                GlobalVars.connection = new MySqlConnection(SqlSetting());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
+        }
+        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
+        {
+            try
+            {
+                this.title = title;
+                this.passed = passed;
+                this.date = date;
+                this.startTime = startTime;
+                this.endTime = endTime;
+                this.delay = delay;
+                this.notes = notes;
+                this.email = email;
+                this.phonenr = phonenr;
+
+            }
+            catch
+            {
+                throw new ArgumentNullException("No Good");
             }
         }
 
@@ -116,20 +135,80 @@ namespace SMSAlertSys
             }
         }
 
-        public void read(MySqlConnection connection) 
-        {
-            var query = new MySqlCommand("SELECT * from tblreminder", connection);
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            adapter.SelectCommand = query;
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-            BindingSource bs = new BindingSource();
-            bs.DataSource = dataTable;
 
-            DataGridViewClass dgvs = new DataGridViewClass();
-            dgvs.initGrid();
-            dgvs.populateGrid(bs);
-            dgvs.Show();
+
+        public BindingSource showDataTable() 
+        {
+            try
+            {
+                //this.dataTable = retrieveDbTbl();
+
+                BindingSource bs = new BindingSource();
+                bs.DataSource = GlobalVars.cache;
+
+                DataGridViewClass dgvs = new DataGridViewClass();
+                dgvs.initGrid();
+                dgvs.Show();
+
+                return bs;
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return null;
+            }
+        }
+
+        public DataTable retrieveDbTbl() 
+        {
+            try
+            {
+                var query = new MySqlCommand("SELECT * FROM tblreminder", GlobalVars.connection);
+                MySqlDataAdapter ad = new MySqlDataAdapter();
+                ad.SelectCommand = query;
+                this.dataTable = new DataTable();
+                ad.Fill(dataTable);
+                return this.dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return null;
+            }
+        }
+
+        public void updateDbTbl() 
+        {
+
+            GlobalVars.connection.Open();
+            //delete.ExecuteNonQuery();
+            DataTable retrievedtbl = retrieveDbTbl();
+
+            DataTable cache = GlobalVars.cache;
+            int i = 0;
+            foreach (DataRow row in GlobalVars.cache.AsEnumerable())
+            {
+                foreach ( DataRow row1 in retrievedtbl.AsEnumerable())
+                {
+                    if (row1["ReminderID"] == row["ReminderID"]) 
+                    {
+                        retrievedtbl.Rows.Remove(row1);
+                        GlobalVars.cache.Rows.Remove(row);
+                        break;
+                    } 
+                    else 
+                    {
+                        retrievedtbl.Rows.Remove(row1);
+                        // INSTRUCTION TO DELETE IN THE REAL DB TOO
+                        // comes heres ...
+                        int id = (int) row1["ReminderID"];
+                        var delete = new MySqlCommand("DELETE FROM tblreminder WHERE " + id, GlobalVars.connection);
+                        delete.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            GlobalVars.connection.Close();
         }
     }
 }
