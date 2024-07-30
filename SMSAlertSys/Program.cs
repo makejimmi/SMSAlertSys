@@ -12,9 +12,9 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Security.Cryptography;
 
-namespace WindowsFormsApp_HelloWorld
+namespace SMSAlertSys
 {
-    internal static class Program
+    static class Program
     {
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.

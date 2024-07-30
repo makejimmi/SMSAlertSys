@@ -10,23 +10,40 @@ using System.Windows.Forms;
 
 namespace SMSAlertSys
 {
-    internal class DataGridViewClass: Form
+    // Class which is responsible for the data grid view "Display" of data. 
+    class DataGridViewClass : Form
     {
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private Button refreshBtn;
+        private Button cancelBtn;
+        private Button removeBtn;
+        private Button saveNUpdateBtn;
         private DataGridView dataGridView1;
 
-        BindingSource bs = new BindingSource();
+        private BindingSource bs = null;
+
+        // Constructor which at the same time initializes all needed components for the method or other classes only to call ".Show()" to have the grid.
+        public DataGridViewClass()
+        {
+            try
+            {
+                this.bs = new BindingSource();
+                this.bs.DataSource = GlobalVars.cache;
+                InitializeComponent();
+                refreshGrid();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
+        }
 
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.refreshBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
+            this.removeBtn = new System.Windows.Forms.Button();
+            this.saveNUpdateBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -38,55 +55,54 @@ namespace SMSAlertSys
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1268, 295);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
-            // button1
+            // refreshBtn
             // 
-            this.button1.Location = new System.Drawing.Point(1124, 313);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Refresh";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.refreshBtn.Location = new System.Drawing.Point(1124, 313);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(75, 23);
+            this.refreshBtn.TabIndex = 1;
+            this.refreshBtn.Text = "Refresh";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
             // 
-            // button2
+            // cancelBtn
             // 
-            this.button2.Location = new System.Drawing.Point(1205, 313);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.cancelBtn.Location = new System.Drawing.Point(1205, 313);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(75, 23);
+            this.cancelBtn.TabIndex = 2;
+            this.cancelBtn.Text = "Cancel";
+            this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
-            // button3
+            // removeBtn
             // 
-            this.button3.Location = new System.Drawing.Point(171, 313);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Remove";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.removeBtn.Location = new System.Drawing.Point(171, 313);
+            this.removeBtn.Name = "removeBtn";
+            this.removeBtn.Size = new System.Drawing.Size(75, 23);
+            this.removeBtn.TabIndex = 3;
+            this.removeBtn.Text = "Remove";
+            this.removeBtn.UseVisualStyleBackColor = true;
+            this.removeBtn.Click += new System.EventHandler(this.removeBtn_Click);
             // 
-            // button4
+            // saveNUpdateBtn
             // 
-            this.button4.Location = new System.Drawing.Point(12, 313);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(153, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Save and Upload";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.saveNUpdateBtn.Location = new System.Drawing.Point(12, 313);
+            this.saveNUpdateBtn.Name = "saveNUpdateBtn";
+            this.saveNUpdateBtn.Size = new System.Drawing.Size(153, 23);
+            this.saveNUpdateBtn.TabIndex = 4;
+            this.saveNUpdateBtn.Text = "Save and Upload";
+            this.saveNUpdateBtn.UseVisualStyleBackColor = true;
+            this.saveNUpdateBtn.Click += new System.EventHandler(this.saveNUpdateBtn_Click);
             // 
             // DataGridViewClass
             // 
             this.ClientSize = new System.Drawing.Size(1293, 345);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.saveNUpdateBtn);
+            this.Controls.Add(this.removeBtn);
+            this.Controls.Add(this.cancelBtn);
+            this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -95,30 +111,17 @@ namespace SMSAlertSys
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-
         }
 
-        public void initGrid()
-        {
-            try 
-            {
-                InitializeComponent();
-            } 
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error");
-            }
-            refreshGrid();
-        }
-
-        public void populateGrid(BindingSource bs)
+        // Populates the grid with the cache being the binding source's Datasource and therefore being the DataSource of the datagridview.
+        private void populateGrid()
         {
             try
             {
-                dataGridView1.DataSource = bs;
-                dataGridView1.AutoResizeRows();
+                dataGridView1.DataSource = this.bs;
+                dataGridView1.AutoResizeRows(); 
                 dataGridView1.AutoResizeColumns();
-                //dataGridView1.AutoResizeColumnHeadersHeight();
+                dataGridView1.AutoResizeColumnHeadersHeight();
             }
             catch (Exception e)
             {
@@ -126,59 +129,52 @@ namespace SMSAlertSys
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        // Closes the form
+        private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
+        // This is based on the same concept as the one when one refreshes a webpage.
+        // A new request to the SQL server which gives back the current and actual database table.
+        // The grid then gets populated again.
         private void refreshGrid()
         {
             GlobalVars.connection.Open();
             GlobalVars.cache = GlobalVars.sc.retrieveDbTbl();
 
             this.bs.DataSource = GlobalVars.cache;
-            this.populateGrid(this.bs);
+            this.populateGrid();
 
             GlobalVars.connection.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        // Button for the method "refreshGrid()"
+        private void refreshBtn_Click(object sender, EventArgs e)
         {
             refreshGrid();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        // Removes rows from the datagridview which in turn removes rows from the "cache" as well.
+        // Algorithm got added which works in conjunction with another global variable: List GlobalVars.idxOfRemovedRows.
+        // The list keeps track of the indices of the deleted rows which in turn is used for the DELETE query in the SQL class.
+        private void removeBtn_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in dataGridView1.SelectedRows)
             {
+                GlobalVars.idxOfRemovedRows.Add(row.Index);
+                //GlobalVars.cache.Rows.RemoveAt(row.Index);
                 dataGridView1.Rows.RemoveAt(row.Index);
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        // Final button in this class which works together with SQL class and the method "removeBtn_Click" to update the table in the database.
+        private void saveNUpdateBtn_Click(object sender, EventArgs e)
         {
-            //GlobalVars.cache = (DataTable) this.bs.DataSource;
-            //GlobalVars.sc.updateDbTbl(
-
             this.bs.DataSource = GlobalVars.cache;
-            this.populateGrid(this.bs);
-
+            this.populateGrid();
             GlobalVars.cache.AcceptChanges();
-
             GlobalVars.sc.updateDbTbl();
-
-            //BindingSource bs1 = new BindingSource();
-            //bs1.DataSource = GlobalVars.cache;
-            //this.populateGrid(bs1);
-            //this.Update();
-            //this.Refresh();
-            //MessageBox.Show("Grid has been updated successfully");
-
-
         }
     }
 }
