@@ -108,7 +108,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dataGridView.cs" />
     <Compile Include="DataGridViewClass.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,9 +121,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sqlClass.cs" />
-    <EmbeddedResource Include="dataGridView.resx">
-      <DependentUpon>dataGridView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataGridViewClass.resx">
       <DependentUpon>DataGridViewClass.cs</DependentUpon>
     </EmbeddedResource>
