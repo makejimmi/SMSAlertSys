@@ -47,7 +47,7 @@ namespace SMSAlertSys
             try
             {
                 InitializeComponent(); // Initialize UI components
-                boldUpDates();
+                boldUpDates(); // bolds the font of the days with calendar entries
             }
             catch (Exception e)
             {
@@ -167,7 +167,23 @@ namespace SMSAlertSys
             }
         }
 
-        // Background worker DoWork event handler
+        // Method to make fonts bold
+        private void boldUpDates()
+        {
+            try
+            {
+                foreach (DataRow row in GlobalVars.cache.Rows)
+                {
+                    this.monthCalendar1.AddBoldedDate(row.Field<DateTime>("Date"));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message); // Show error message in case of exception
+            }
+        }
+
+        // Background worker TO BE DONE ----------------------------------------------------------------------------------
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             try
@@ -188,22 +204,7 @@ namespace SMSAlertSys
             }
         }
 
-        private void boldUpDates()
-        {
-            try
-            {
-                foreach (DataRow row in GlobalVars.cache.Rows)
-                {
-                    this.monthCalendar1.AddBoldedDate(row.Field<DateTime>("Date"));
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message); // Show error message in case of exception
-            }
-        }
-
-        // Background worker RunWorkerCompleted event handler
+        // Background worker RunWorkerCompleted ----------------------------------------------------------------------------------
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             try

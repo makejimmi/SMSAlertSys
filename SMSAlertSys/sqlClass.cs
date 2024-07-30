@@ -16,6 +16,7 @@ namespace SMSAlertSys
     class sqlClass
     {
         DataTable dataTable = null;
+
         // Change username, password and database according to one's needs
         // the database options can be ignored if you want to access all of them
         private string datasource = "localhost";
@@ -24,6 +25,7 @@ namespace SMSAlertSys
         private string password = "";
         private string database = "smsalertsys";
 
+        // fields of the sql table, ordered in no particular order
         private string title = "";
         private int passed = 0;
         private DateTime date = DateTime.Now;
@@ -34,6 +36,7 @@ namespace SMSAlertSys
         private string email = "";
         private string phonenr = "";
 
+        // this class' constructor which establishes a connection just by instantiation
         public sqlClass(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
         {
             try
@@ -51,10 +54,11 @@ namespace SMSAlertSys
                 this.phonenr = phonenr;
 
             } catch {
-                throw new ArgumentNullException("No Good");
+                throw new ArgumentNullException();
             }
         }
 
+        // constructor to only get a new connection with the information needed to connect to database
         public sqlClass() 
         {
             try
@@ -67,6 +71,7 @@ namespace SMSAlertSys
             }
         }
 
+        // essentially the same thing as the sqlclass but i would not want to instantiate a new class just to reconnect
         public void reconnect() 
         {
             try
@@ -75,9 +80,11 @@ namespace SMSAlertSys
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error");
+                MessageBox.Show(e.Message);
             }
         }
+
+        // method that will be used in conjunction with the constructor that has no parameters, both sum up to be what constructor number 1 is
         public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
         {
             try
@@ -95,7 +102,7 @@ namespace SMSAlertSys
             }
             catch
             {
-                throw new ArgumentNullException("No Good");
+                throw new ArgumentNullException();
             }
         }
 
@@ -135,30 +142,26 @@ namespace SMSAlertSys
             }
         }
 
-
-
-        public BindingSource showDataTable() 
+        // method used to bind the global variable "cache" to the datagridview which essentially means that the datagridview mirrors cache.
+        // Every operation happening to the datagridview also happens to cache.
+        public void showDataTable() 
         {
             try
             {
-                //this.dataTable = retrieveDbTbl();
-
-                BindingSource bs = new BindingSource();
-                bs.DataSource = GlobalVars.cache;
-
+                // instantiates and initializes datagridview
                 DataGridViewClass dgvs = new DataGridViewClass();
-                dgvs.initGrid();
+                
+                // shows what has been initialized just one line of code earlier
                 dgvs.Show();
-
-                return bs;
             }
             catch (Exception ex) 
             {
-                MessageBox.Show(ex.Message, "Error");
-                return null;
+                MessageBox.Show(ex.Message);
             }
         }
 
+        // Method used to retrieve the database table.
+        // Returns the current datatable that can be found in "http://localhost/phpmyadmin/index.php?route=/sql&db=smsalertsys&table=tblreminder&pos=0" as well.
         public DataTable retrieveDbTbl() 
         {
             try
@@ -177,38 +180,41 @@ namespace SMSAlertSys
             }
         }
 
+        // Updates the database table according to the form that the cache, with that then also datagridview, has taken.
         public void updateDbTbl() 
         {
-
             GlobalVars.connection.Open();
-            //delete.ExecuteNonQuery();
-            DataTable retrievedtbl = retrieveDbTbl();
+            string col = "ReminderID";
+            DataTable actualDt = retrieveDbTbl(); // the current database table is being retrieved
+            bool check = false;
 
-            DataTable cache = GlobalVars.cache;
-            int i = 0;
-            foreach (DataRow row in GlobalVars.cache.AsEnumerable())
+            // Loop to check whether the modified cache even has rows. If that fails to be true then all the rows in the table in the database get removed.
+            foreach (DataRow row in GlobalVars.cache.AsEnumerable()) 
             {
-                foreach ( DataRow row1 in retrievedtbl.AsEnumerable())
-                {
-                    if (row1["ReminderID"] == row["ReminderID"]) 
-                    {
-                        retrievedtbl.Rows.Remove(row1);
-                        GlobalVars.cache.Rows.Remove(row);
-                        break;
-                    } 
-                    else 
-                    {
-                        retrievedtbl.Rows.Remove(row1);
-                        // INSTRUCTION TO DELETE IN THE REAL DB TOO
-                        // comes heres ...
-                        int id = (int) row1["ReminderID"];
-                        var delete = new MySqlCommand("DELETE FROM tblreminder WHERE " + id, GlobalVars.connection);
-                        delete.ExecuteNonQuery();
-                    }
-                }
+                check = true;
+                break;
             }
 
+            // If the previous loop succeeds in being true then:
+            if (check)
+            {
+                // Loop that gets all the removed values' index. The index values are all saved while the rows were in the process of being deleted.
+                // With the indices one must remove the not-anymore-existing values from the current db table.
+                foreach (int idx in GlobalVars.idxOfRemovedRows) 
+                {
+                    var row = actualDt.Rows[idx][0];
+                    var delete = new MySqlCommand("DELETE FROM tblreminder WHERE " + col + "=" + row , GlobalVars.connection);
+                    delete.ExecuteNonQuery();
+                }
+            }
+            else // all rows in the current table get removed
+            {
+                var deleteAll = new MySqlCommand("DELETE FROM tblreminder;", GlobalVars.connection);
+                deleteAll.ExecuteNonQuery();
+            }
+            GlobalVars.idxOfRemovedRows.Clear(); // index values are being cleared due to all
             GlobalVars.connection.Close();
+            MessageBox.Show("Changes have been saved and uploaded!");
         }
     }
 }
