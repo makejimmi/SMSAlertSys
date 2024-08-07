@@ -49,12 +49,12 @@ namespace SMSAlertSys
         //            });
         //        }).Build();
 
-        //    // will block until the last running job completes
+            // will block until the last running job completes
         //    await builder.RunAsync();
         //}
 
         // bool value which is set via reading the xml file which should be generated and given
         // within the directory where the program runs
-        public static bool JbCheck; 
+        //public static bool JbCheck; 
     }
 }
