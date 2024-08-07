@@ -11,6 +11,8 @@ using System.Net;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Security.Cryptography;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace SMSAlertSys
 {
@@ -24,6 +26,8 @@ namespace SMSAlertSys
         [STAThread]
         static void Main()
         {
+            TasksClass tC = new TasksClass();
+            tC.TaskGenerator();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
