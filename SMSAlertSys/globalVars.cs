@@ -34,24 +34,24 @@ namespace SMSAlertSys
         // with the scheduled alarms.
         // if the scheduled days is the same as the current date and time, then fire off the alarm and check the "passed" bool in sql
         // => it then needs to check the bool value of variable "passed", the current date and the scheduled day.
-        public static async Task JobBuilder()
-        {
-            var builder = Host.CreateDefaultBuilder()
-                .ConfigureServices((cxt, services) =>
-                {
-                    services.AddQuartz(q =>
-                    {
-                        q.UseMicrosoftDependencyInjectionJobFactory();
-                    });
-                    services.AddQuartzHostedService(opt =>
-                    {
-                        opt.WaitForJobsToComplete = true;
-                    });
-                }).Build();
+        //public static async Task JobBuilder()
+        //{
+        //    var builder = Host.CreateDefaultBuilder()
+        //        .ConfigureServices((cxt, services) =>
+        //        {
+        //            services.AddQuartz(q =>
+        //            {
+        //                q.UseMicrosoftDependencyInjectionJobFactory();
+        //            });
+        //            services.AddQuartzHostedService(opt =>
+        //            {
+        //                opt.WaitForJobsToComplete = true;
+        //            });
+        //        }).Build();
 
-            // will block until the last running job completes
-            await builder.RunAsync();
-        }
+        //    // will block until the last running job completes
+        //    await builder.RunAsync();
+        //}
 
         // bool value which is set via reading the xml file which should be generated and given
         // within the directory where the program runs
