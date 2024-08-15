@@ -31,13 +31,12 @@ namespace SMSAlertSys
         private DateTime date = DateTime.Now;
         private DateTime startTime = DateTime.Now;
         private DateTime endTime = DateTime.Now;
-        private string delay = "";
         private string notes = "";
         private string email = "";
         private string phonenr = "";
 
         // this class' constructor which establishes a connection just by instantiation
-        public sqlClass(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
+        public sqlClass(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string notes, string email, string phonenr)
         {
             try
             {
@@ -48,7 +47,6 @@ namespace SMSAlertSys
                 this.date = date;
                 this.startTime = startTime;
                 this.endTime = endTime;
-                this.delay = delay;
                 this.notes = notes;
                 this.email = email;
                 this.phonenr = phonenr;
@@ -85,7 +83,7 @@ namespace SMSAlertSys
         }
 
         // method that will be used in conjunction with the constructor that has no parameters, both sum up to be what constructor number 1 is
-        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string delay, string notes, string email, string phonenr)
+        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string notes, string email, string phonenr)
         {
             try
             {
@@ -94,7 +92,6 @@ namespace SMSAlertSys
                 this.date = date;
                 this.startTime = startTime;
                 this.endTime = endTime;
-                this.delay = delay;
                 this.notes = notes;
                 this.email = email;
                 this.phonenr = phonenr;
@@ -120,8 +117,8 @@ namespace SMSAlertSys
         {
             try
             {
-                string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Delay, Notes, Email, PhoneNr)";
-                string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Delay, @Notes, @Email, @PhoneNr);";
+                string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Notes, Email, PhoneNr)";
+                string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Notes, @Email, @PhoneNr);";
 
                 MySqlCommand comm = conn.CreateCommand();
                 comm.CommandText = queryPt1 + queryPt2;
@@ -130,7 +127,7 @@ namespace SMSAlertSys
                 comm.Parameters.AddWithValue("@Date", date);
                 comm.Parameters.AddWithValue("@StartTime", startTime);
                 comm.Parameters.AddWithValue("@EndTime", endTime);
-                comm.Parameters.AddWithValue("@Delay", delay);
+                //comm.Parameters.AddWithValue("@Delay", delay);
                 comm.Parameters.AddWithValue("@Notes", notes);
                 comm.Parameters.AddWithValue("@Email", email);
                 comm.Parameters.AddWithValue("@PhoneNr", phonenr);

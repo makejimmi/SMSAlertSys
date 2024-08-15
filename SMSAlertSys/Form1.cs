@@ -52,8 +52,8 @@ namespace SMSAlertSys
             try
             {
                 InitializeComponent(); // Initialize UI components
-                this.timer1.Interval = 1000;
-                this.timer1.Enabled = true;
+                //this.timer1.Interval = 1000;
+                //this.timer1.Enabled = true;
                 boldUpDates(); // bolds the font of the days with calendar entries
             }
             catch (Exception e)
@@ -125,7 +125,7 @@ namespace SMSAlertSys
             // 
             // timer1
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            //this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // datePicker
             // 
@@ -191,18 +191,18 @@ namespace SMSAlertSys
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            Console.WriteLine(secondsCounter + " second/s has/have elapsed");
-            this.secondsCounter++;
-            if (secondsCounter > 10)
-            {
-                secondsCounter = 0;
-                this.timer1.Stop();
-                this.timer1.Dispose();
-                this.Close();
-            }
-        }
+        //private void timer1_Tick(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine(secondsCounter + " second/s has/have elapsed");
+        //    this.secondsCounter++;
+        //    if (secondsCounter > 10)
+        //    {
+        //        secondsCounter = 0;
+        //        this.timer1.Stop();
+        //        this.timer1.Dispose();
+        //        this.Close();
+        //    }
+        //}
 
         // it seems as though the ticking timer is bad practice which is why I will use a task in conjunction
         // with a task scheduler.

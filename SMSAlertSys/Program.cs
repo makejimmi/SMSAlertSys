@@ -48,6 +48,7 @@ namespace SMSAlertSys
                 // Kalendarübersicht anzeigen und die Datentabelle bereithalten.
                 Form calendarForm = new datePicker();
                 Application.Run(calendarForm);
+
             }
             catch (Exception ex) 
             {
