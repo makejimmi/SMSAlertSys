@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32.TaskScheduler;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,9 +14,13 @@ namespace SMSAlertSys
 {
     public class AlarmConfigForm : Form
     {
+        private string[] triggers = { "Time (Standard)", "Daily", "Weekly", "Monthly", "Boot", "Idle", "Logon", "Registration" };
+
         public AlarmConfigForm()
         {
             InitializeComponent();
+            initTriggerBox();
+            GlobalVars.TasksClass = new TasksClass();
         }
 
         /// <summary>
@@ -46,12 +52,10 @@ namespace SMSAlertSys
             this.taskNameTBLabel = new System.Windows.Forms.Label();
             this.taskNameTB = new System.Windows.Forms.TextBox();
             this.triggerBox = new System.Windows.Forms.ComboBox();
-            this.actionBox = new System.Windows.Forms.ComboBox();
             this.userIDTextBox = new System.Windows.Forms.TextBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.descriptionRichTB = new System.Windows.Forms.RichTextBox();
             this.triggerBoxLabel = new System.Windows.Forms.Label();
-            this.actionBoxLabel = new System.Windows.Forms.Label();
             this.userIDTextBoxLabel = new System.Windows.Forms.Label();
             this.passwordTextBoxLabel = new System.Windows.Forms.Label();
             this.dayPicker = new System.Windows.Forms.DateTimePicker();
@@ -86,17 +90,7 @@ namespace SMSAlertSys
             this.triggerBox.Name = "triggerBox";
             this.triggerBox.Size = new System.Drawing.Size(560, 32);
             this.triggerBox.TabIndex = 1;
-            this.triggerBox.Text = "Trigger";
-            // 
-            // actionBox
-            // 
-            this.actionBox.FormattingEnabled = true;
-            this.actionBox.Location = new System.Drawing.Point(158, 94);
-            this.actionBox.Margin = new System.Windows.Forms.Padding(6);
-            this.actionBox.Name = "actionBox";
-            this.actionBox.Size = new System.Drawing.Size(178, 32);
-            this.actionBox.TabIndex = 2;
-            this.actionBox.Text = "Action";
+            this.triggerBox.Text = "Time (Standard)";
             // 
             // userIDTextBox
             // 
@@ -135,16 +129,6 @@ namespace SMSAlertSys
             this.triggerBoxLabel.TabIndex = 8;
             this.triggerBoxLabel.Text = "Trigger*";
             // 
-            // actionBoxLabel
-            // 
-            this.actionBoxLabel.AutoSize = true;
-            this.actionBoxLabel.Location = new System.Drawing.Point(81, 98);
-            this.actionBoxLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.actionBoxLabel.Name = "actionBoxLabel";
-            this.actionBoxLabel.Size = new System.Drawing.Size(75, 25);
-            this.actionBoxLabel.TabIndex = 7;
-            this.actionBoxLabel.Text = "Action*";
-            // 
             // userIDTextBoxLabel
             // 
             this.userIDTextBoxLabel.AutoSize = true;
@@ -167,16 +151,16 @@ namespace SMSAlertSys
             // 
             // dayPicker
             // 
-            this.dayPicker.Location = new System.Drawing.Point(348, 96);
+            this.dayPicker.Location = new System.Drawing.Point(158, 98);
             this.dayPicker.Margin = new System.Windows.Forms.Padding(4);
             this.dayPicker.Name = "dayPicker";
-            this.dayPicker.Size = new System.Drawing.Size(174, 29);
+            this.dayPicker.Size = new System.Drawing.Size(368, 29);
             this.dayPicker.TabIndex = 3;
             // 
             // timePicker
             // 
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.timePicker.Location = new System.Drawing.Point(534, 96);
+            this.timePicker.Location = new System.Drawing.Point(534, 98);
             this.timePicker.Margin = new System.Windows.Forms.Padding(4);
             this.timePicker.Name = "timePicker";
             this.timePicker.ShowUpDown = true;
@@ -214,12 +198,10 @@ namespace SMSAlertSys
             this.Controls.Add(this.dayPicker);
             this.Controls.Add(this.passwordTextBoxLabel);
             this.Controls.Add(this.userIDTextBoxLabel);
-            this.Controls.Add(this.actionBoxLabel);
             this.Controls.Add(this.triggerBoxLabel);
             this.Controls.Add(this.descriptionRichTB);
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.userIDTextBox);
-            this.Controls.Add(this.actionBox);
             this.Controls.Add(this.triggerBox);
             this.Controls.Add(this.taskNameTB);
             this.Controls.Add(this.taskNameTBLabel);
@@ -236,12 +218,10 @@ namespace SMSAlertSys
         private Label taskNameTBLabel;
         private TextBox taskNameTB;
         private ComboBox triggerBox;
-        private ComboBox actionBox;
         private TextBox userIDTextBox;
         private TextBox passwordTextBox;
         private RichTextBox descriptionRichTB;
         private Label triggerBoxLabel;
-        private Label actionBoxLabel;
         private Label userIDTextBoxLabel;
         private Label passwordTextBoxLabel;
         private DateTimePicker dayPicker;
@@ -249,9 +229,44 @@ namespace SMSAlertSys
         private Button saveBtn;
         private Button cancelBtn;
 
+        private void initTriggerBox()
+        {
+            foreach (string trigger in triggers)
+            {
+                this.triggerBox.Items.Add(trigger);
+            }
+        }
+
         private void saveBtn_Click(object sender, EventArgs e)
         {
+            int triggerSetting = 0;
 
+            foreach (string trigger in triggers)
+            {
+                if (trigger != this.triggerBox.Text) triggerSetting++;
+                else break;
+            }
+
+            GlobalVars.chosenTrigger = GlobalVars.TasksClass.createTrigger(triggerSetting, this.timePicker, this.dayPicker);
+            MessageBox.Show(GlobalVars.chosenTrigger.ToString());
+
+            GlobalVars.execAction = GlobalVars.TasksClass.createAction();
+
+            GlobalVars.task_path = this.taskNameTB.Text;
+
+            if (this.userIDTextBox.Text == null || this.userIDTextBox.Text == "(Optional)")
+                GlobalVars.task_userId = null;
+            else GlobalVars.task_userId = this.userIDTextBox.Text;
+
+            if (this.passwordTextBox.Text == null || this.passwordTextBox.Text == "(Optional)")
+                GlobalVars.task_password= null;
+            else GlobalVars.task_password = this.passwordTextBox.Text;
+
+            if (this.descriptionRichTB.Text == null || this.descriptionRichTB.Text == "Description (Optional)")
+                GlobalVars.task_description= null;
+            else GlobalVars.task_description = this.descriptionRichTB.Text;
+
+            this.Close();
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)

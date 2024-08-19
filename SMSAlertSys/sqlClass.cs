@@ -31,6 +31,7 @@ namespace SMSAlertSys
         private DateTime date = DateTime.Now;
         private DateTime startTime = DateTime.Now;
         private DateTime endTime = DateTime.Now;
+        private string trigger = "";
         private string notes = "";
         private string email = "";
         private string phonenr = "";
@@ -83,7 +84,7 @@ namespace SMSAlertSys
         }
 
         // method that will be used in conjunction with the constructor that has no parameters, both sum up to be what constructor number 1 is
-        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string notes, string email, string phonenr)
+        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string trigger,string notes, string email, string phonenr)
         {
             try
             {
@@ -92,6 +93,7 @@ namespace SMSAlertSys
                 this.date = date;
                 this.startTime = startTime;
                 this.endTime = endTime;
+                this.trigger = trigger;
                 this.notes = notes;
                 this.email = email;
                 this.phonenr = phonenr;
@@ -117,20 +119,23 @@ namespace SMSAlertSys
         {
             try
             {
+                //string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Trigger, Notes, Email, PhoneNr)";
+                //string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Trigger, @Notes, @Email, @PhoneNr);";
+
                 string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Notes, Email, PhoneNr)";
                 string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Notes, @Email, @PhoneNr);";
 
                 MySqlCommand comm = conn.CreateCommand();
                 comm.CommandText = queryPt1 + queryPt2;
-                comm.Parameters.AddWithValue("@Title", title);
-                comm.Parameters.AddWithValue("@Passed", passed);
-                comm.Parameters.AddWithValue("@Date", date);
-                comm.Parameters.AddWithValue("@StartTime", startTime);
-                comm.Parameters.AddWithValue("@EndTime", endTime);
-                //comm.Parameters.AddWithValue("@Delay", delay);
-                comm.Parameters.AddWithValue("@Notes", notes);
-                comm.Parameters.AddWithValue("@Email", email);
-                comm.Parameters.AddWithValue("@PhoneNr", phonenr);
+                comm.Parameters.AddWithValue("@Title", this.title);
+                comm.Parameters.AddWithValue("@Passed", this.passed);
+                comm.Parameters.AddWithValue("@Date", this.date);
+                comm.Parameters.AddWithValue("@StartTime", this.startTime);
+                comm.Parameters.AddWithValue("@EndTime", this.endTime);
+                //comm.Parameters.AddWithValue("@Trigger", this.trigger);
+                comm.Parameters.AddWithValue("@Notes", this.notes);
+                comm.Parameters.AddWithValue("@Email", this.email);
+                comm.Parameters.AddWithValue("@PhoneNr", this.phonenr);
                 comm.ExecuteNonQuery();
             }
             catch (Exception ex)

@@ -13,6 +13,7 @@ using System.Data;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Hosting;
 using Quartz;
+using Microsoft.Win32.TaskScheduler;
 
 namespace SMSAlertSys
 {
@@ -56,5 +57,14 @@ namespace SMSAlertSys
         // bool value which is set via reading the xml file which should be generated and given
         // within the directory where the program runs
         //public static bool JbCheck; 
+
+        public static TasksClass TasksClass = null;
+
+        public static string task_path = null;
+        public static Trigger chosenTrigger = null;
+        public static ExecAction execAction = null;
+        public static string task_userId = null;
+        public static string task_password = null;
+        public static string task_description = null;
     }
 }

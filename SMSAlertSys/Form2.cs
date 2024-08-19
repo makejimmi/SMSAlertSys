@@ -381,12 +381,16 @@ namespace SMSAlertSys
 
                 // Works on a similar basis as the git commit and then with "insert()" it pushes it to the table
                 GlobalVars.sc.addData(this._title, this._passed, this._date,
-                           this.startTime, this.endTime,
+                           this.startTime, this.endTime, GlobalVars.chosenTrigger.ToString(),
                            this._notes, this._email, this._phonenr);
 
                 GlobalVars.connection.Open();
                 GlobalVars.sc.insert(GlobalVars.connection); // inserts all the given data from "addData" in to the table
                 GlobalVars.connection.Close();
+
+                GlobalVars.TasksClass.modAddTask(GlobalVars.task_path, GlobalVars.chosenTrigger, GlobalVars.execAction,
+                    GlobalVars.task_userId, GlobalVars.task_password, GlobalVars.task_description);
+
                 this.Close();
             }
             catch (Exception ex)
