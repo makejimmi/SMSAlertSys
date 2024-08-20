@@ -15,6 +15,7 @@ namespace SMSAlertSys
     public class AlarmConfigForm : Form
     {
         private string[] triggers = { "Time (Standard)", "Daily", "Weekly", "Monthly", "Boot", "Idle", "Logon", "Registration" };
+        private int triggerSetting;
 
         public AlarmConfigForm()
         {
@@ -91,6 +92,7 @@ namespace SMSAlertSys
             this.triggerBox.Size = new System.Drawing.Size(560, 32);
             this.triggerBox.TabIndex = 1;
             this.triggerBox.Text = "Time (Standard)";
+            this.triggerBox.SelectedIndexChanged += new System.EventHandler(this.triggerBox_SelectedIndexChanged);
             // 
             // userIDTextBox
             // 
@@ -228,6 +230,7 @@ namespace SMSAlertSys
         private DateTimePicker timePicker;
         private Button saveBtn;
         private Button cancelBtn;
+        private ComboBox delayBox;
 
         private void initTriggerBox()
         {
@@ -239,13 +242,13 @@ namespace SMSAlertSys
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            int triggerSetting = 0;
+            //int triggerSetting = 0;
 
-            foreach (string trigger in triggers)
-            {
-                if (trigger != this.triggerBox.Text) triggerSetting++;
-                else break;
-            }
+            //foreach (string trigger in triggers)
+            //{
+            //    if (trigger != this.triggerBox.Text) triggerSetting++;
+            //    else break;
+            //}
 
             GlobalVars.chosenTrigger = GlobalVars.TasksClass.createTrigger(triggerSetting, this.timePicker, this.dayPicker);
             MessageBox.Show(GlobalVars.chosenTrigger.ToString());
@@ -272,6 +275,154 @@ namespace SMSAlertSys
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void triggerBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string option = (sender as ComboBox).Text;
+
+            int standardLocX = 158;
+            int standardLocY = 98;
+            int standardLength = 368;
+            int standardHeight = 29;
+            int maxLength = standardLength + standardLength / 2 + 8;
+            int tabIdx = 3;
+ 
+            switch (option) 
+            {
+                case "Time (Standard)":
+                    this.triggerSetting = 0;
+                    removeUIComps();
+
+                    addDayPicker(standardLocX, standardLocY, standardLength, standardHeight, tabIdx);
+
+                    // prev. timepicker LocX = 534, prev. timepicker LocY = 98
+                    // timepicker is principally smaller in length than daypicker by 184 (half of 368)
+
+                    // 158 + 368 = 534 - x
+                    // x = 534 - 158 - 368 = 8
+                    addTimePicker(standardLocX+standardLength+8, 98, standardLength/2, 29, tabIdx+1);
+
+                    this.Controls.Add(this.dayPicker);
+                    this.Controls.Add(this.timePicker);
+
+                    resAperf();
+                    break;
+
+                //case "Daily":
+                //    this.triggerSetting = 1;
+                //    removeUIComps();
+
+                //    int firstLength = (maxLength - 30) / 2;
+                //    addDayPicker(standardLocX, standardLocY, firstLength, standardHeight, tabIdx);
+                //    addDayPicker(standardLocX + 8 + firstLength, standardLocY, firstLength, standardHeight, tabIdx + 1);
+                //    add
+
+                //     continue when you have more time lmao TBDDDDDDDDDDDDDDDd
+
+                //    resAperf();
+                //    break;
+
+                //case "Weekly":
+                //    this.triggerSetting = 2;
+                //    removeUIComps();
+                //    resAperf();
+
+
+                //    break;
+
+                //case "Monthly":
+                //    this.triggerSetting = 3;
+                //    removeUIComps();
+                //    resAperf();
+
+
+                //    break;
+
+                case "Boot":
+                    this.triggerSetting = 4;
+                    removeUIComps();
+
+                    this.delayBox = new System.Windows.Forms.ComboBox();
+                    this.delayBox.FormattingEnabled = true;
+                    this.delayBox.Location = new System.Drawing.Point(standardLocX, standardLocY);
+                    this.delayBox.Margin = new System.Windows.Forms.Padding(6);
+                    this.delayBox.Name = "delayBox";
+                    this.delayBox.Size = new System.Drawing.Size(standardLength, standardHeight);
+                    this.delayBox.TabIndex = 3;
+                    this.delayBox.Text = "Delay in minutes (Optional)";
+
+                    for(int i  = 0; i < 1439; i++)
+                    {
+                        this.delayBox.Items.Add(i);
+                    }
+
+                    resAperf();
+                    break;
+
+                //case "Idle":
+                //    this.triggerSetting = 5;
+                //    removeUIComps();
+                //    resAperf();
+
+
+                //    break;
+
+                //case "Logon":
+                //    this.triggerSetting = 6;
+                //    removeUIComps();
+                //    resAperf();
+
+
+                //    break;
+
+                //case "Registration":
+                //    this.triggerSetting = 7;
+                //    removeUIComps();
+                //    resAperf();
+
+
+                //    break;
+            }
+        }
+
+        private void removeUIComps()
+        {
+            this.SuspendLayout();
+            this.Controls.Remove(this.dayPicker);
+            this.Controls.Remove(this.timePicker);
+            this.Controls.Remove(this.delayBox);
+        }
+
+        private void addDayPicker(int x, int y, int length, int height, int tabIdx)
+        {
+            this.dayPicker = new System.Windows.Forms.DateTimePicker();
+            this.dayPicker.Location = new System.Drawing.Point(x, y);
+            this.dayPicker.Margin = new System.Windows.Forms.Padding(4);
+            this.dayPicker.Name = "dayPicker";
+            this.dayPicker.Size = new System.Drawing.Size(length, height);
+            this.dayPicker.TabIndex = tabIdx;
+        }
+
+        private void addTimePicker(int x, int y, int length, int height, int tabIdx) 
+        {
+            this.timePicker = new System.Windows.Forms.DateTimePicker();
+            this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.timePicker.Location = new System.Drawing.Point(x, y);
+            this.timePicker.Margin = new System.Windows.Forms.Padding(4);
+            this.timePicker.Name = "timePicker";
+            this.timePicker.ShowUpDown = true;
+            this.timePicker.Size = new System.Drawing.Size(length, height);
+            this.timePicker.TabIndex = tabIdx;
+        }
+
+        private void resAperf()
+        {
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(733, 504);
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
     }
 }
