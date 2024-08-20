@@ -58,6 +58,7 @@ namespace SMSAlertSys
         // within the directory where the program runs
         //public static bool JbCheck; 
 
+
         public static TasksClass TasksClass = null;
 
         public static string task_path = null;
