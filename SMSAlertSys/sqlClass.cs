@@ -122,8 +122,13 @@ namespace SMSAlertSys
                 //string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Trigger, Notes, Email, PhoneNr)";
                 //string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Trigger, @Notes, @Email, @PhoneNr);";
 
-                string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Notes, Email, PhoneNr)";
-                string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Notes, @Email, @PhoneNr);";
+                //string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Notes, Email, PhoneNr)";
+                //string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Notes, @Email, @PhoneNr);";
+
+                string queryPt1 = "INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, TriggerInfo, Notes, Email, PhoneNr)";
+                string queryPt2 = " VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @TriggerInfo, @Notes, @Email, @PhoneNr);";
+
+                // INSERT INTO tblreminder(Title, Passed, Date, StartTime, EndTime, Trigger, Notes, Email, PhoneNr) VALUES (@Title, @Passed, @Date, @StartTime, @EndTime, @Trigger, @Notes, @Email, @PhoneNr);
 
                 MySqlCommand comm = conn.CreateCommand();
                 comm.CommandText = queryPt1 + queryPt2;
@@ -132,7 +137,7 @@ namespace SMSAlertSys
                 comm.Parameters.AddWithValue("@Date", this.date);
                 comm.Parameters.AddWithValue("@StartTime", this.startTime);
                 comm.Parameters.AddWithValue("@EndTime", this.endTime);
-                //comm.Parameters.AddWithValue("@Trigger", this.trigger);
+                comm.Parameters.AddWithValue("@TriggerInfo", this.trigger);
                 comm.Parameters.AddWithValue("@Notes", this.notes);
                 comm.Parameters.AddWithValue("@Email", this.email);
                 comm.Parameters.AddWithValue("@PhoneNr", this.phonenr);

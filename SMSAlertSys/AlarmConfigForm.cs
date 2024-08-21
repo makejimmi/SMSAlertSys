@@ -14,7 +14,8 @@ namespace SMSAlertSys
 {
     public class AlarmConfigForm : Form
     {
-        private string[] triggers = { "Time (Standard)", "Daily", "Weekly", "Monthly", "Boot", "Idle", "Logon", "Registration" };
+        //private string[] triggers = { "Time (Standard)", "Daily", "Weekly", "Monthly", "Boot", "Idle", "Logon", "Registration" };
+        private string[] triggers = { "Time (Standard)", "Boot"};
         private int triggerSetting;
 
         public AlarmConfigForm()
@@ -96,7 +97,7 @@ namespace SMSAlertSys
             // 
             // userIDTextBox
             // 
-            this.userIDTextBox.Location = new System.Drawing.Point(158, 135);
+            this.userIDTextBox.Location = new System.Drawing.Point(158, 171);
             this.userIDTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.userIDTextBox.Name = "userIDTextBox";
             this.userIDTextBox.Size = new System.Drawing.Size(560, 29);
@@ -105,7 +106,7 @@ namespace SMSAlertSys
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(158, 174);
+            this.passwordTextBox.Location = new System.Drawing.Point(158, 210);
             this.passwordTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(560, 29);
@@ -114,10 +115,10 @@ namespace SMSAlertSys
             // 
             // descriptionRichTB
             // 
-            this.descriptionRichTB.Location = new System.Drawing.Point(11, 220);
+            this.descriptionRichTB.Location = new System.Drawing.Point(12, 247);
             this.descriptionRichTB.Margin = new System.Windows.Forms.Padding(4);
             this.descriptionRichTB.Name = "descriptionRichTB";
-            this.descriptionRichTB.Size = new System.Drawing.Size(706, 227);
+            this.descriptionRichTB.Size = new System.Drawing.Size(706, 201);
             this.descriptionRichTB.TabIndex = 7;
             this.descriptionRichTB.Text = "Description (Optional)";
             // 
@@ -134,7 +135,7 @@ namespace SMSAlertSys
             // userIDTextBoxLabel
             // 
             this.userIDTextBoxLabel.AutoSize = true;
-            this.userIDTextBoxLabel.Location = new System.Drawing.Point(76, 135);
+            this.userIDTextBoxLabel.Location = new System.Drawing.Point(76, 171);
             this.userIDTextBoxLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.userIDTextBoxLabel.Name = "userIDTextBoxLabel";
             this.userIDTextBoxLabel.Size = new System.Drawing.Size(72, 25);
@@ -144,7 +145,7 @@ namespace SMSAlertSys
             // passwordTextBoxLabel
             // 
             this.passwordTextBoxLabel.AutoSize = true;
-            this.passwordTextBoxLabel.Location = new System.Drawing.Point(50, 175);
+            this.passwordTextBoxLabel.Location = new System.Drawing.Point(50, 211);
             this.passwordTextBoxLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.passwordTextBoxLabel.Name = "passwordTextBoxLabel";
             this.passwordTextBoxLabel.Size = new System.Drawing.Size(98, 25);
@@ -212,7 +213,6 @@ namespace SMSAlertSys
             this.Text = "AlarmConfigForm";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -341,21 +341,25 @@ namespace SMSAlertSys
 
                 case "Boot":
                     this.triggerSetting = 4;
-                    removeUIComps();
 
                     this.delayBox = new System.Windows.Forms.ComboBox();
+
+                    removeUIComps();
+
                     this.delayBox.FormattingEnabled = true;
                     this.delayBox.Location = new System.Drawing.Point(standardLocX, standardLocY);
                     this.delayBox.Margin = new System.Windows.Forms.Padding(6);
                     this.delayBox.Name = "delayBox";
                     this.delayBox.Size = new System.Drawing.Size(standardLength, standardHeight);
-                    this.delayBox.TabIndex = 3;
+                    this.delayBox.TabIndex = tabIdx;
                     this.delayBox.Text = "Delay in minutes (Optional)";
 
                     for(int i  = 0; i < 1439; i++)
                     {
                         this.delayBox.Items.Add(i);
                     }
+
+                    this.Controls.Add(this.delayBox);
 
                     resAperf();
                     break;

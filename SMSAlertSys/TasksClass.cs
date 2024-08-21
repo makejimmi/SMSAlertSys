@@ -131,10 +131,10 @@ namespace SMSAlertSys
 
                     // has other options than the time trigger itself, TO BE IMPLEMENTED
 
-                    DailyTrigger dailyT = new DailyTrigger();
-                    dailyT.StartBoundary = timePicker.Value;
+                    //DailyTrigger dailyT = new DailyTrigger();
+                    //dailyT.StartBoundary = timePicker.Value;
 
-                    this.trigger = dailyT;
+                    //this.trigger = dailyT;
                     break;
                 case 2:
                     // create weekly tr + action based on data from form
@@ -149,8 +149,8 @@ namespace SMSAlertSys
 
                     // and again, has more options, TO BE IMPLEMENTED
 
-                    MonthlyTrigger monthlyT = new MonthlyTrigger();
-                    this.trigger = monthlyT;
+                    //MonthlyTrigger monthlyT = new MonthlyTrigger();
+                    //this.trigger = monthlyT;
                     break;
                 case 4:
                     // create boot tr + action based on data from form
@@ -165,24 +165,24 @@ namespace SMSAlertSys
 
                     // here too
 
-                    IdleTrigger idleT = new IdleTrigger();
-                    this.trigger = idleT;
+                    //IdleTrigger idleT = new IdleTrigger();
+                    //this.trigger = idleT;
                     break;
                 case 6:
                     // create logon tr + action based on data from form
 
                     // here too
 
-                    LogonTrigger logonT = new LogonTrigger();
-                    this.trigger = logonT;
+                    //LogonTrigger logonT = new LogonTrigger();
+                    //this.trigger = logonT;
                     break;
                 case 7:
                     // create registration + action based on data from form
 
                     // here too
 
-                    RegistrationTrigger registrationT = new RegistrationTrigger();
-                    this.trigger = registrationT;
+                    //RegistrationTrigger registrationT = new RegistrationTrigger();
+                    //this.trigger = registrationT;
                     break;
                 default: this.trigger = new TimeTrigger(); break;
             }
