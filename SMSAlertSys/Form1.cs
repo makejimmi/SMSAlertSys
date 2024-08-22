@@ -40,9 +40,9 @@ namespace SMSAlertSys
         timePicker tP = null;
 
         private Button showAllEvents;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private Label label1;
         private Timer timer1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+
         private int secondsCounter = 0;
 
 
@@ -51,8 +51,6 @@ namespace SMSAlertSys
         {
             try
             {
-                BackgroundTask bT = new BackgroundTask();
-
                 InitializeComponent(); // Initialize UI components
                 //this.timer1.Interval = 1000;
                 //this.timer1.Enabled = true;
@@ -90,15 +88,13 @@ namespace SMSAlertSys
             this.runBtn = new System.Windows.Forms.Button();
             this.showAllEvents = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // monthCalendar1
             // 
             this.monthCalendar1.CalendarDimensions = new System.Drawing.Size(4, 2);
-            this.monthCalendar1.Location = new System.Drawing.Point(0, -2);
-            this.monthCalendar1.Margin = new System.Windows.Forms.Padding(16);
+            this.monthCalendar1.Location = new System.Drawing.Point(0, -1);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.ShowWeekNumbers = true;
             this.monthCalendar1.TabIndex = 0;
@@ -109,10 +105,9 @@ namespace SMSAlertSys
             // 
             // runBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(1236, 564);
-            this.runBtn.Margin = new System.Windows.Forms.Padding(5);
+            this.runBtn.Location = new System.Drawing.Point(706, 322);
             this.runBtn.Name = "runBtn";
-            this.runBtn.Size = new System.Drawing.Size(161, 37);
+            this.runBtn.Size = new System.Drawing.Size(92, 21);
             this.runBtn.TabIndex = 1;
             this.runBtn.Text = "Just Run";
             this.runBtn.UseVisualStyleBackColor = true;
@@ -120,41 +115,32 @@ namespace SMSAlertSys
             // 
             // showAllEvents
             // 
-            this.showAllEvents.Location = new System.Drawing.Point(1094, 564);
-            this.showAllEvents.Margin = new System.Windows.Forms.Padding(5);
+            this.showAllEvents.Location = new System.Drawing.Point(625, 322);
             this.showAllEvents.Name = "showAllEvents";
-            this.showAllEvents.Size = new System.Drawing.Size(131, 40);
+            this.showAllEvents.Size = new System.Drawing.Size(75, 23);
             this.showAllEvents.TabIndex = 2;
             this.showAllEvents.Text = "All Events";
             this.showAllEvents.UseVisualStyleBackColor = true;
             this.showAllEvents.Click += new System.EventHandler(this.showAllEvents_Click);
             // 
-            // label1
+            // timer1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 579);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 25);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
+            //this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // datePicker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1418, 616);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(810, 352);
             this.Controls.Add(this.showAllEvents);
             this.Controls.Add(this.runBtn);
             this.Controls.Add(this.monthCalendar1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "datePicker";
             this.Text = "Form1";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -204,15 +190,6 @@ namespace SMSAlertSys
                 MessageBox.Show(ex.Message); // Show error message in case of exception
             }
         }
-
-        private void startAsyncBackgroundWorker()
-        {
-            if(backgroundWorker1.IsBusy != true)
-            {
-                backgroundWorker1.RunWorkerAsync();
-            } 
-        }
-
 
         //private void timer1_Tick(object sender, EventArgs e)
         //{

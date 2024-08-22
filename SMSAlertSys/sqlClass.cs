@@ -52,26 +52,28 @@ namespace SMSAlertSys
                 this.email = email;
                 this.phonenr = phonenr;
 
-            } catch {
+            }
+            catch
+            {
                 throw new ArgumentNullException();
             }
         }
 
         // constructor to only get a new connection with the information needed to connect to database
-        public sqlClass() 
+        public sqlClass()
         {
             try
             {
                 GlobalVars.connection = new MySqlConnection(SqlSetting());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
 
         // essentially the same thing as the sqlclass but i would not want to instantiate a new class just to reconnect
-        public void reconnect() 
+        public void reconnect()
         {
             try
             {
@@ -84,7 +86,7 @@ namespace SMSAlertSys
         }
 
         // method that will be used in conjunction with the constructor that has no parameters, both sum up to be what constructor number 1 is
-        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string trigger,string notes, string email, string phonenr)
+        public void addData(string title, int passed, DateTime date, DateTime startTime, DateTime endTime, string trigger, string notes, string email, string phonenr)
         {
             try
             {
@@ -151,17 +153,17 @@ namespace SMSAlertSys
 
         // method used to bind the global variable "cache" to the datagridview which essentially means that the datagridview mirrors cache.
         // Every operation happening to the datagridview also happens to cache.
-        public void showDataTable() 
+        public void showDataTable()
         {
             try
             {
                 // instantiates and initializes datagridview
                 DataGridViewClass dgvs = new DataGridViewClass();
-                
+
                 // shows what has been initialized just one line of code earlier
                 dgvs.Show();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -169,7 +171,7 @@ namespace SMSAlertSys
 
         // Method used to retrieve the database table.
         // Returns the current datatable that can be found in "http://localhost/phpmyadmin/index.php?route=/sql&db=smsalertsys&table=tblreminder&pos=0" as well.
-        public DataTable retrieveDbTbl() 
+        public DataTable retrieveDbTbl()
         {
             try
             {
@@ -188,7 +190,7 @@ namespace SMSAlertSys
         }
 
         // Updates the database table according to the form that the cache, with that then also datagridview, has taken.
-        public void updateDbTbl() 
+        public void updateDbTbl()
         {
             GlobalVars.connection.Open();
             string col = "ReminderID";
@@ -196,7 +198,7 @@ namespace SMSAlertSys
             bool check = false;
 
             // Loop to check whether the modified cache even has rows. If that fails to be true then all the rows in the table in the database get removed.
-            foreach (DataRow row in GlobalVars.cache.AsEnumerable()) 
+            foreach (DataRow row in GlobalVars.cache.AsEnumerable())
             {
                 check = true;
                 break;
@@ -207,10 +209,10 @@ namespace SMSAlertSys
             {
                 // Loop that gets all the removed values' index. The index values are all saved while the rows were in the process of being deleted.
                 // With the indices one must remove the not-anymore-existing values from the current db table.
-                foreach (int idx in GlobalVars.idxOfRemovedRows) 
+                foreach (int idx in GlobalVars.idxOfRemovedRows)
                 {
                     var row = actualDt.Rows[idx][0];
-                    var delete = new MySqlCommand("DELETE FROM tblreminder WHERE " + col + "=" + row , GlobalVars.connection);
+                    var delete = new MySqlCommand("DELETE FROM tblreminder WHERE " + col + "=" + row, GlobalVars.connection);
                     delete.ExecuteNonQuery();
                 }
             }

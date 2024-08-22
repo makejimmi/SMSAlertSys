@@ -15,7 +15,7 @@ namespace SMSAlertSys
     public class AlarmConfigForm : Form
     {
         //private string[] triggers = { "Time (Standard)", "Daily", "Weekly", "Monthly", "Boot", "Idle", "Logon", "Registration" };
-        private string[] triggers = { "Time (Standard)", "Boot"};
+        private string[] triggers = { "Time (Standard)", "Boot" };
         private int triggerSetting;
 
         public AlarmConfigForm()
@@ -262,11 +262,11 @@ namespace SMSAlertSys
             else GlobalVars.task_userId = this.userIDTextBox.Text;
 
             if (this.passwordTextBox.Text == null || this.passwordTextBox.Text == "(Optional)")
-                GlobalVars.task_password= null;
+                GlobalVars.task_password = null;
             else GlobalVars.task_password = this.passwordTextBox.Text;
 
             if (this.descriptionRichTB.Text == null || this.descriptionRichTB.Text == "Description (Optional)")
-                GlobalVars.task_description= null;
+                GlobalVars.task_description = null;
             else GlobalVars.task_description = this.descriptionRichTB.Text;
 
             this.Close();
@@ -287,8 +287,8 @@ namespace SMSAlertSys
             int standardHeight = 29;
             int maxLength = standardLength + standardLength / 2 + 8;
             int tabIdx = 3;
- 
-            switch (option) 
+
+            switch (option)
             {
                 case "Time (Standard)":
                     this.triggerSetting = 0;
@@ -301,7 +301,7 @@ namespace SMSAlertSys
 
                     // 158 + 368 = 534 - x
                     // x = 534 - 158 - 368 = 8
-                    addTimePicker(standardLocX+standardLength+8, 98, standardLength/2, 29, tabIdx+1);
+                    addTimePicker(standardLocX + standardLength + 8, 98, standardLength / 2, 29, tabIdx + 1);
 
                     this.Controls.Add(this.dayPicker);
                     this.Controls.Add(this.timePicker);
@@ -354,7 +354,7 @@ namespace SMSAlertSys
                     this.delayBox.TabIndex = tabIdx;
                     this.delayBox.Text = "Delay in minutes (Optional)";
 
-                    for(int i  = 0; i < 1439; i++)
+                    for (int i = 0; i < 1439; i++)
                     {
                         this.delayBox.Items.Add(i);
                     }
@@ -364,29 +364,29 @@ namespace SMSAlertSys
                     resAperf();
                     break;
 
-                //case "Idle":
-                //    this.triggerSetting = 5;
-                //    removeUIComps();
-                //    resAperf();
+                    //case "Idle":
+                    //    this.triggerSetting = 5;
+                    //    removeUIComps();
+                    //    resAperf();
 
 
-                //    break;
+                    //    break;
 
-                //case "Logon":
-                //    this.triggerSetting = 6;
-                //    removeUIComps();
-                //    resAperf();
-
-
-                //    break;
-
-                //case "Registration":
-                //    this.triggerSetting = 7;
-                //    removeUIComps();
-                //    resAperf();
+                    //case "Logon":
+                    //    this.triggerSetting = 6;
+                    //    removeUIComps();
+                    //    resAperf();
 
 
-                //    break;
+                    //    break;
+
+                    //case "Registration":
+                    //    this.triggerSetting = 7;
+                    //    removeUIComps();
+                    //    resAperf();
+
+
+                    //    break;
             }
         }
 
@@ -408,7 +408,7 @@ namespace SMSAlertSys
             this.dayPicker.TabIndex = tabIdx;
         }
 
-        private void addTimePicker(int x, int y, int length, int height, int tabIdx) 
+        private void addTimePicker(int x, int y, int length, int height, int tabIdx)
         {
             this.timePicker = new System.Windows.Forms.DateTimePicker();
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;

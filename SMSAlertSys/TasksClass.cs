@@ -12,7 +12,7 @@ namespace SMSAlertSys
     {
         TaskService tS;
         private Trigger trigger;
-        public TasksClass() 
+        public TasksClass()
         {
             Connector();
         }
@@ -46,9 +46,9 @@ namespace SMSAlertSys
         {
             TaskLogonType taskLogonType = TaskLogonType.InteractiveToken;
             tS.AddTask(taskName, trigger, action, optUserID, optUserPw, taskLogonType, optDescription);
-            
+
             Task task = tS.FindTask(taskName, true);
-            if (task == null) 
+            if (task == null)
             {
                 MessageBox.Show("Task could not be added.\nCheck input, try again or contact developer.");
                 return;
@@ -57,7 +57,7 @@ namespace SMSAlertSys
             MessageBox.Show(task.Name + " has been created, added and can be viewed in " + task.Path);
         }
 
-        private bool TaskAlreadyGenerated() 
+        private bool TaskAlreadyGenerated()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("C:\\Study\\all I know about SQL\\SMSAlertSys\\SMSAlertSys\\config.xml");

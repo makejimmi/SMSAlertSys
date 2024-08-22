@@ -217,7 +217,6 @@
     <Compile Include="AlarmConfigForm.Designer.cs">
       <DependentUpon>AlarmConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BackgroundTask.cs" />
     <Compile Include="DataGridViewClass.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,7 +251,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -267,12 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\atIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\testIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
