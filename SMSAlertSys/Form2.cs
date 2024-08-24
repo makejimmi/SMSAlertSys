@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Mysqlx.Resultset;
+using System.Threading;
 
 namespace SMSAlertSys
 {
@@ -63,6 +64,7 @@ namespace SMSAlertSys
         List<RichTextBox> richBoxList = new List<RichTextBox>();
         private Button cancelBtn;
         private Button configAlarmBtn;
+        private Button button1;
         List<string> boxStrings = new List<string> {
             "Notes which will be included in the notification...",
             "Title",
@@ -74,8 +76,8 @@ namespace SMSAlertSys
         {
             try
             {
-                MessageBox.Show("Pick a date and then, in a new window, the time on and at which you want " +
-                    "to be notified for the event that you will have to describe in notes.");
+                //MessageBox.Show("Pick a date and then, in a new window, the time on and at which you want " +
+                //    "to be notified for the event that you will have to describe in notes.");
                 InitializeComponent();
                 config();
                 configToolTips();
@@ -143,13 +145,14 @@ namespace SMSAlertSys
             this.emailRichBox = new System.Windows.Forms.RichTextBox();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.configAlarmBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startTimeBox
             // 
             this.startTimeBox.FormattingEnabled = true;
             this.startTimeBox.Location = new System.Drawing.Point(21, 103);
-            this.startTimeBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.startTimeBox.Margin = new System.Windows.Forms.Padding(5);
             this.startTimeBox.Name = "startTimeBox";
             this.startTimeBox.Size = new System.Drawing.Size(349, 32);
             this.startTimeBox.TabIndex = 1;
@@ -160,7 +163,7 @@ namespace SMSAlertSys
             // 
             this.endTimeBox.FormattingEnabled = true;
             this.endTimeBox.Location = new System.Drawing.Point(399, 103);
-            this.endTimeBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.endTimeBox.Margin = new System.Windows.Forms.Padding(5);
             this.endTimeBox.Name = "endTimeBox";
             this.endTimeBox.Size = new System.Drawing.Size(349, 32);
             this.endTimeBox.TabIndex = 2;
@@ -170,7 +173,7 @@ namespace SMSAlertSys
             // notesRichBox
             // 
             this.notesRichBox.Location = new System.Drawing.Point(21, 145);
-            this.notesRichBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.notesRichBox.Margin = new System.Windows.Forms.Padding(5);
             this.notesRichBox.Name = "notesRichBox";
             this.notesRichBox.Size = new System.Drawing.Size(732, 188);
             this.notesRichBox.TabIndex = 4;
@@ -180,7 +183,7 @@ namespace SMSAlertSys
             // saveBtn
             // 
             this.saveBtn.Location = new System.Drawing.Point(383, 401);
-            this.saveBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.saveBtn.Margin = new System.Windows.Forms.Padding(5);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(182, 40);
             this.saveBtn.TabIndex = 7;
@@ -191,7 +194,7 @@ namespace SMSAlertSys
             // titleRichBox
             // 
             this.titleRichBox.Location = new System.Drawing.Point(21, 29);
-            this.titleRichBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.titleRichBox.Margin = new System.Windows.Forms.Padding(5);
             this.titleRichBox.Name = "titleRichBox";
             this.titleRichBox.Size = new System.Drawing.Size(732, 64);
             this.titleRichBox.TabIndex = 0;
@@ -201,7 +204,7 @@ namespace SMSAlertSys
             // phoneNrRichBox
             // 
             this.phoneNrRichBox.Location = new System.Drawing.Point(21, 346);
-            this.phoneNrRichBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.phoneNrRichBox.Margin = new System.Windows.Forms.Padding(5);
             this.phoneNrRichBox.Name = "phoneNrRichBox";
             this.phoneNrRichBox.Size = new System.Drawing.Size(349, 39);
             this.phoneNrRichBox.TabIndex = 5;
@@ -211,7 +214,7 @@ namespace SMSAlertSys
             // emailRichBox
             // 
             this.emailRichBox.Location = new System.Drawing.Point(383, 348);
-            this.emailRichBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.emailRichBox.Margin = new System.Windows.Forms.Padding(5);
             this.emailRichBox.Name = "emailRichBox";
             this.emailRichBox.Size = new System.Drawing.Size(364, 37);
             this.emailRichBox.TabIndex = 6;
@@ -221,7 +224,7 @@ namespace SMSAlertSys
             // cancelBtn
             // 
             this.cancelBtn.Location = new System.Drawing.Point(576, 401);
-            this.cancelBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.cancelBtn.Margin = new System.Windows.Forms.Padding(5);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(175, 40);
             this.cancelBtn.TabIndex = 8;
@@ -232,7 +235,7 @@ namespace SMSAlertSys
             // configAlarmBtn
             // 
             this.configAlarmBtn.Location = new System.Drawing.Point(191, 401);
-            this.configAlarmBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.configAlarmBtn.Margin = new System.Windows.Forms.Padding(5);
             this.configAlarmBtn.Name = "configAlarmBtn";
             this.configAlarmBtn.Size = new System.Drawing.Size(182, 40);
             this.configAlarmBtn.TabIndex = 9;
@@ -240,11 +243,22 @@ namespace SMSAlertSys
             this.configAlarmBtn.UseVisualStyleBackColor = true;
             this.configAlarmBtn.Click += new System.EventHandler(this.configAlarmBtn_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(40, 410);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // timePicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(777, 462);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.configAlarmBtn);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.emailRichBox);
@@ -255,7 +269,7 @@ namespace SMSAlertSys
             this.Controls.Add(this.endTimeBox);
             this.Controls.Add(this.startTimeBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "timePicker";
@@ -453,6 +467,17 @@ namespace SMSAlertSys
         {
             AlarmConfigForm alarmConfigForm = new AlarmConfigForm();
             alarmConfigForm.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var thread = new Thread(ThreadStart);
+            thread.TrySetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+        private static void ThreadStart()
+        {
+            Application.Run(new BackgroundProcess());
         }
     }
 }

@@ -19,12 +19,12 @@ namespace SMSAlertSys
         public void TaskGenerator()
         {
             TaskXMLWriter("false");
-            if (!TaskAlreadyGenerated())
-            {
-                TaskXMLWriter("true");
-                MessageBox.Show("Task has been generated.\nSee Windows Task Scheduler.");
-            }
-            else MessageBox.Show("Task has already been generated. DELETE THIS MESSAGEBOX AFTERWARDS");
+            //if (!TaskAlreadyGenerated())
+            //{
+            //    TaskXMLWriter("true");
+            //    MessageBox.Show("Task has been generated.\nSee Windows Task Scheduler.");
+            //}
+            //else MessageBox.Show("Task has already been generated. DELETE THIS MESSAGEBOX AFTERWARDS");
         }
         private void Connector()
         {
@@ -35,7 +35,7 @@ namespace SMSAlertSys
                 MessageBox.Show("Connection to the task scheduler could not be established.\nTry again or contact developer.");
                 return;
             }
-            else MessageBox.Show("Connection to the task scheduler has been established.");
+            //else MessageBox.Show("Connection to the task scheduler has been established.");
 
             //foreach (Task task in taskService.AllTasks)
             //{
