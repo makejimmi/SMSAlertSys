@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Mysqlx.Resultset;
 using System.Threading;
+using System.Xml.Linq;
 
 namespace SMSAlertSys
 {
@@ -404,6 +405,12 @@ namespace SMSAlertSys
 
                 GlobalVars.TasksClass.modAddTask(GlobalVars.task_path, GlobalVars.chosenTrigger, GlobalVars.execAction,
                     GlobalVars.task_userId, GlobalVars.task_password, GlobalVars.task_description);
+
+
+                XDocument xD = xmlFile.loadXmlFile("events.xml");
+                xmlFile.writeDataXml(xD, "events.xml", this._title, this._passed, this._date,
+                           this.startTime, this.endTime, GlobalVars.chosenTrigger.ToString(),
+                           this._notes, this._email, this._phonenr);
 
                 this.Close();
             }

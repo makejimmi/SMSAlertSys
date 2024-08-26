@@ -27,7 +27,6 @@ namespace SMSAlertSys
         static void Main()
         {
             TasksClass tC = new TasksClass();
-            tC.TaskGenerator();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
