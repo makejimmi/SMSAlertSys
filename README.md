@@ -1,4 +1,4 @@
-# SMSAlertSys
+# SMSAlertSys (in early development)
 
 # Date and Notification Management Application
 
